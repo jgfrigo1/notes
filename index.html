@@ -862,11 +862,11 @@
 
             initializeApp() {
                 // Set your password here - change this to your desired password
-                this.correctPassword = 'notes';
+                this.correctPassword = 'laMetaContrasenye123';
                 
-                // JSONBin.io configuration - REPLACE WITH YOUR API KEY
-                this.jsonbinApiKey = '$2a$10$OH3gnlOH17ST.7OE9cnAMuRbzSSCoydxFhcBQXswqr7PgpuBgtKMO'; // Get from jsonbin.io
-                this.jsonbinBaseUrl = 'https://api.jsonbin.io/v3/b';
+                // GitHub Gist configuration - REPLACE WITH YOUR TOKEN
+                this.githubToken = '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'; // Get from github.com/settings/tokens
+                this.githubApiUrl = 'https://api.github.com/gists';
                 
                 this.loadTheme();
                 this.bindEvents();
@@ -904,9 +904,9 @@
 
             updateThemeText() {
                 const titles = {
-                    light: '🔒 Les Meves Notes',
-                    dark: '🌙 Les Meves Notes',
-                    matrix: '⚡ MATRIX NOTES'
+                    light: '🔒 Les Meves Notes Segures',
+                    dark: '🌙 Les Meves Notes Segures',
+                    matrix: '⚡ NOTES SEGURES MATRIX'
                 };
 
                 const appTitles = {
