@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Meves Notes Segures</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+				.theme-dropdown {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+		}
+
+		.theme-dropdown select {
+			padding: 8px 12px;
+			border: 1px solid #ccc;
+			background: white;
+			border-radius: 6px;
+			cursor: pointer;
+			font-size: 12px;
+			min-width: 100px;
+		}
+
+		body.dark .theme-dropdown select {
+			background: #34495e;
+			border-color: #7f8c8d;
+			color: #ecf0f1;
+		}
+
+		body.matrix .theme-dropdown select {
+			background: rgba(0, 0, 0, 0.8);
+			border-color: #00ff41;
+			color: #00ff41;
+			font-family: 'Source Code Pro', monospace;
+		}
+
+		.theme-dropdown-header {
+			margin-right: 15px;
+		}
+
+		.theme-dropdown-header select {
+			padding: 6px 10px;
+			font-size: 11px;
+			min-width: 80px;
+		}
+
+        /* Matrix Rain Effect */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            display: none;
+        }
+
+        body.matrix .matrix-bg {
+            display: block;
+        }
+
+        .matrix-column {
+            position: absolute;
+            top: -100px;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 14px;
+            color: #00ff41;
+            animation: matrix-fall linear infinite;
+            text-shadow: 0 0 8px #00ff41;
+        }
+
+        @keyframes matrix-fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px;
+            z-index: 10;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .container {
+            background: #2c3e50;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        body.matrix .container {
+            background: rgba(0, 20, 0, 0.95);
+            border: 2px solid #00ff41;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.3), inset 0 0 30px rgba(0, 255, 65, 0.1);
+            backdrop-filter: blur(2px);
+        }
+
+        .login-screen {
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        body.dark .login-screen,
+        body.matrix .login-screen {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .login-screen h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .login-screen h1 {
+            color: #ecf0f1;
+        }
+
+        body.matrix .login-screen h1 {
+            color: #00ff41;
+            text-shadow: 0 0 10px #00ff41;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        .theme-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-btn {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .theme-btn {
+            background: #34495e;
+            border-color: #7f8c8d;
+            color: #ecf0f1;
+        }
+
+        body.matrix .theme-btn {
+            background: rgba(0, 0, 0, 0.8);
+            border-color: #00ff41;
+            color: #00ff41;
+            font-family: 'Source Code Pro', monospace;
+        }
+
+        .theme-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        body.dark .theme-btn.active {
+            background: #3498db;
+            border-color: #3498db;
+        }
+
+        body.matrix .theme-btn.active {
+            background: rgba(0, 255, 65, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.4);
+        }
+
+        .login-form {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .password-input {
+            background: #34495e;
+            border-color: #7f8c8d;
+            color: #ecf0f1;
+        }
+
+        body.matrix .password-input {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff41;
+            border-radius: 4px;
+            color: #00ff41;
+            font-family: 'Source Code Pro', monospace;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        body.dark .password-input:focus {
+            border-color: #3498db;
+        }
+
+        body.matrix .password-input:focus {
+            border-color: #00ff41;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
+            text-shadow: 0 0 5px #00ff41;
+        }
+
+        .password-input::placeholder {
+            color: #999;
+        }
+
+        body.dark .password-input::placeholder {
+            color: #95a5a6;
+        }
+
+        body.matrix .password-input::placeholder {
+            color: #004d00;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .login-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        body.matrix .login-btn {
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            border-radius: 4px;
+            font-family: 'Source Code Pro', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        body.matrix .login-btn:hover {
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+            text-shadow: 0 0 10px #00ff41;
+            transform: none;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        body.matrix .error-message {
+            color: #ff4444;
+            text-shadow: 0 0 5px #ff4444;
+        }
+
+        .notes-app {
+            display: none;
+            height: 90vh;
+            max-height: 700px;
+        }
+
+        body.matrix .notes-app {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body.dark .header {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        body.matrix .header {
+            background: rgba(0, 0, 0, 0.95);
+            color: #00ff41;
+            border-bottom: 1px solid #00ff41;
+            box-shadow: 0 2px 10px rgba(0, 255, 65, 0.3);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        body.matrix .header h1 {
+            text-shadow: 0 0 10px #00ff41;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-selector-header {
+            display: flex;
+            gap: 5px;
+        }
+
+        .theme-btn-small {
+            width: 30px;
+            height: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-btn-small.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+        }
+
+        body.matrix .theme-btn-small {
+            border-color: #00ff41;
+            color: #00ff41;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        body.matrix .theme-btn-small.active {
+            background: rgba(0, 255, 65, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.4);
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        body.matrix .logout-btn {
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            border-radius: 4px;
+            font-family: 'Source Code Pro', monospace;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        body.matrix .logout-btn:hover {
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.4);
+            text-shadow: 0 0 5px #00ff41;
+        }
+
+        .main-content {
+            display: flex;
+            height: calc(100% - 80px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #f8f9fa;
+            border-right: 1px solid #e1e5e9;
+            overflow-y: auto;
+        }
+
+        body.dark .sidebar {
+            background: #34495e;
+            border-right-color: #7f8c8d;
+        }
+
+        body.matrix .sidebar {
+            background: rgba(0, 10, 0, 0.9);
+            border-right-color: #00ff41;
+        }
+
+        .add-note-btn {
+            width: calc(100% - 20px);
+            margin: 10px;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .add-note-btn {
+            background: #3498db;
+        }
+
+        body.matrix .add-note-btn {
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            border-radius: 4px;
+            font-family: 'Source Code Pro', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .add-note-btn:hover {
+            background: #5a67d8;
+        }
+
+        body.dark .add-note-btn:hover {
+            background: #2980b9;
+        }
+
+        body.matrix .add-note-btn:hover {
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+            text-shadow: 0 0 5px #00ff41;
+        }
+
+        .notes-list {
+            padding: 0 10px;
+        }
+
+        .note-item {
+            padding: 12px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        body.dark .note-item {
+            background: #2c3e50;
+            color: #ecf0f1;
+        }
+
+        body.matrix .note-item {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #004d00;
+            border-radius: 4px;
+        }
+
+        .note-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body.matrix .note-item:hover {
+            border-color: #00ff41;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+        }
+
+        .note-item.active {
+            border-left-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        body.dark .note-item.active {
+            border-left-color: #3498db;
+            background: #2c3e50;
+        }
+
+        body.matrix .note-item.active {
+            border-left-color: #00ff41;
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+        }
+
+        .note-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        body.dark .note-title {
+            color: #ecf0f1;
+        }
+
+        body.matrix .note-title {
+            color: #00ff41;
+            font-weight: 500;
+            text-shadow: 0 0 3px #00ff41;
+        }
+
+        .note-preview {
+            color: #666;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        body.dark .note-preview {
+            color: #bdc3c7;
+        }
+
+        body.matrix .note-preview {
+            color: #66ff66;
+            opacity: 0.8;
+        }
+
+        .delete-note {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        body.matrix .delete-note {
+            background: #ff4444;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .note-item:hover .delete-note {
+            opacity: 1;
+        }
+
+        body.matrix .note-item:hover .delete-note {
+            box-shadow: 0 0 10px #ff4444;
+        }
+
+        .editor-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        body.dark .editor-area {
+            background: #2c3e50;
+        }
+
+        body.matrix .editor-area {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .editor-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        body.dark .editor-header {
+            border-bottom-color: #7f8c8d;
+        }
+
+        body.matrix .editor-header {
+            border-bottom-color: #004d00;
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .note-title-input {
+            width: 100%;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            outline: none;
+            padding: 5px 0;
+            color: #333;
+            background: transparent;
+        }
+
+        body.dark .note-title-input {
+            color: #ecf0f1;
+        }
+
+        body.matrix .note-title-input {
+            color: #00ff41;
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 500;
+            text-shadow: 0 0 5px #00ff41;
+        }
+
+        .note-title-input::placeholder {
+            color: #999;
+        }
+
+        body.dark .note-title-input::placeholder {
+            color: #95a5a6;
+        }
+
+        body.matrix .note-title-input::placeholder {
+            color: #004d00;
+        }
+
+        .note-content {
+            flex: 1;
+            padding: 20px;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: none;
+            background: transparent;
+            color: #333;
+        }
+
+        body.dark .note-content {
+            color: #ecf0f1;
+        }
+
+        body.matrix .note-content {
+            font-family: 'Source Code Pro', monospace;
+            color: #66ff66;
+            text-shadow: 0 0 2px #66ff66;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .note-content::placeholder {
+            color: #999;
+        }
+
+        body.dark .note-content::placeholder {
+            color: #95a5a6;
+        }
+
+        body.matrix .note-content::placeholder {
+            color: #004d00;
+        }
+
+        .empty-state {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 16px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        body.dark .empty-state {
+            color: #95a5a6;
+        }
+
+        body.matrix .empty-state {
+            color: #004d00;
+            font-family: 'Source Code Pro', monospace;
+        }
+
+        .sync-status {
+            font-size: 12px;
+            color: #666;
+            margin-left: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.matrix .sync-status {
+            color: #00ff41;
+            font-family: 'Source Code Pro', monospace;
+        }
+
+        .sync-status.syncing {
+            color: #f39c12;
+        }
+
+        .sync-status.error {
+            color: #e74c3c;
+        }
+
+        body.matrix .sync-status.syncing {
+            color: #ffff00;
+            text-shadow: 0 0 5px #ffff00;
+        }
+
+        body.matrix .sync-status.error {
+            color: #ff4444;
+            text-shadow: 0 0 5px #ff4444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                height: calc(100vh - 20px);
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .notes-app.mobile-sidebar .sidebar {
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 80px;
+                height: calc(100% - 80px);
+                z-index: 10;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            body.matrix .notes-app.mobile-sidebar .sidebar {
+                box-shadow: 2px 0 20px rgba(0, 255, 65, 0.3);
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                background: rgba(255, 255, 255, 0.2);
+                color: white;
+                border: none;
+                padding: 8px 12px;
+                border-radius: 6px;
+                cursor: pointer;
+                margin-right: 10px;
+            }
+
+            body.matrix .mobile-menu-btn {
+                background: rgba(0, 0, 0, 0.8);
+                color: #00ff41;
+                border: 1px solid #00ff41;
+                border-radius: 4px;
+                font-family: 'Source Code Pro', monospace;
+            }
+
+            .theme-selector {
+                position: static;
+                margin-bottom: 20px;
+                justify-content: center;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        body.dark ::-webkit-scrollbar-track {
+            background: #34495e;
+        }
+
+        body.matrix ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        body.dark ::-webkit-scrollbar-thumb {
+            background: #7f8c8d;
+        }
+
+        body.matrix ::-webkit-scrollbar-thumb {
+            background: #00ff41;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        body.dark ::-webkit-scrollbar-thumb:hover {
+            background: #95a5a6;
+        }
+
+        body.matrix ::-webkit-scrollbar-thumb:hover {
+            background: #66ff66;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <div class="matrix-bg" id="matrixBg"></div>
+    
+    <div class="container">
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+			<div class="theme-dropdown">
+				<select id="themeSelect">
+					<option value="light">🌅 Clar</option>
+					<option value="dark">🌙 Fosc</option>
+					<option value="matrix">⚡ Matrix</option>
+				</select>
+			</div>
+            <h1 id="loginTitle">🔒 Les Meves Notes Segures</h1>
+            <form class="login-form" id="loginForm">
+                <input 
+                    type="password" 
+                    class="password-input" 
+                    id="passwordInput" 
+                    placeholder="Introdueix la teva contrasenya"
+                    required
+                >
+                <button type="submit" class="login-btn" id="loginBtn">Desbloquejar Notes</button>
+                <div class="error-message" id="errorMessage"></div>
+            </form>
+        </div>
+
+        <!-- Notes App -->
+        <div class="notes-app" id="notesApp">
+            <div class="header">
+                <div style="display: flex; align-items: center;">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                    <h1 id="appTitle">Les Meves Notes</h1>
+                    <div class="sync-status" id="syncStatus">Sincronitzat</div>
+                </div>
+                <div class="header-controls">
+					<div class="theme-dropdown-header">
+						<select id="themeSelectHeader">
+							<option value="light">🌅 Clar</option>
+							<option value="dark">🌙 Fosc</option>
+							<option value="matrix">⚡ Matrix</option>
+						</select>
+					</div>
+					<button class="logout-btn" id="logoutBtn">Sortir</button>
+				</div>
+            </div>
+            
+            <div class="main-content">
+                <div class="sidebar" id="sidebar">
+                    <button class="add-note-btn" id="addNoteBtn">+ Nova Nota</button>
+                    <div class="notes-list" id="notesList"></div>
+                </div>
+                
+                <div class="editor-area" id="editorArea">
+                    <div class="empty-state" id="emptyState">
+                        Selecciona una nota o crea'n una de nova per començar a escriure
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class SecureNotesApp {
+            constructor() {
+                this.password = '';
+                this.notes = [];
+                this.currentNoteId = null;
+                this.currentTheme = 'light';
+                this.syncEndpoint = null; // Would be set to your backend URL
+                this.initializeApp();
+				window.notesApp = this;
+            }
+
+            initializeApp() {
+                // Set your password here - change this to your desired password
+                this.correctPassword = 'notes';
+                
+                this.loadTheme();
+                this.bindEvents();
+                this.loadNotes();
+                this.initMatrixRain();
+            }
+
+            loadTheme() {
+                const savedTheme = localStorage.getItem('notesAppTheme') || 'light';
+                this.setTheme(savedTheme);
+            }
+
+            setTheme(theme) {
+                this.currentTheme = theme;
+                document.body.className = theme;
+                localStorage.setItem('notesAppTheme', theme);
+                
+                // Update dropdown selections
+				document.getElementById('themeSelect').value = theme;
+				const headerSelect = document.getElementById('themeSelectHeader');
+				if (headerSelect) {
+					headerSelect.value = theme;
+				}
+
+                // Update text content based on theme
+                this.updateThemeText();
+
+                // Handle matrix rain
+                if (theme === 'matrix' && !this.matrixInitialized) {
+                    this.initMatrixRain();
+                } else if (theme !== 'matrix') {
+                    this.stopMatrixRain();
+                }
+            }
+
+            updateThemeText() {
+                const titles = {
+                    light: '🔒 Les Meves Notes Segures',
+                    dark: '🌙 Les Meves Notes Segures',
+                    matrix: '⚡ NOTES SEGURES MATRIX'
+                };
+
+                const appTitles = {
+                    light: 'Les Meves Notes',
+                    dark: 'Les Meves Notes',
+                    matrix: 'NOTES MATRIX'
+                };
+
+                const placeholders = {
+                    light: 'Introdueix la teva contrasenya',
+                    dark: 'Introdueix la teva contrasenya',
+                    matrix: '> INTRODUEIX_CLAU_ACCÉS'
+                };
+
+                const buttonTexts = {
+                    light: 'Desbloquejar Notes',
+                    dark: 'Desbloquejar Notes',
+                    matrix: 'ACTIVAR_ACCÉS'
+                };
+
+                const emptyStates = {
+                    light: 'Selecciona una nota o crea\'n una de nova per començar a escriure',
+                    dark: 'Selecciona una nota o crea\'n una de nova per començar a escriure',
+                    matrix: '> SELECCIONA_NOTA O CREA_NOVA_TRANSMISSIÓ_'
+                };
+
+				document.getElementById('loginTitle').textContent = titles[this.currentTheme];
+                document.getElementById('appTitle').textContent = appTitles[this.currentTheme];
+                document.getElementById('passwordInput').placeholder = placeholders[this.currentTheme];
+                document.getElementById('loginBtn').textContent = buttonTexts[this.currentTheme];
+                
+                const emptyState = document.getElementById('emptyState');
+                if (emptyState) {
+                    emptyState.textContent = emptyStates[this.currentTheme];
+                }
+            }
+
+            initMatrixRain() {
+                if (this.currentTheme !== 'matrix') return;
+                
+                this.matrixInitialized = true;
+                const matrixBg = document.getElementById('matrixBg');
+                const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                
+                const createColumn = () => {
+                    if (this.currentTheme !== 'matrix') return;
+                    
+                    const column = document.createElement('div');
+                    column.className = 'matrix-column';
+                    column.style.left = Math.random() * window.innerWidth + 'px';
+                    column.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    column.style.opacity = Math.random() * 0.5 + 0.3;
+                    
+                    let text = '';
+                    const length = Math.random() * 20 + 10;
+                    for (let i = 0; i < length; i++) {
+                        text += chars.charAt(Math.floor(Math.random() * chars.length)) + '<br>';
+                    }
+                    column.innerHTML = text;
+                    
+                    matrixBg.appendChild(column);
+                    
+                    setTimeout(() => {
+                        if (column.parentNode) {
+                            column.parentNode.removeChild(column);
+                        }
+                    }, 5000);
+                };
+
+                // Create initial columns
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => createColumn(), Math.random() * 2000);
+                }
+
+                // Continue creating columns
+                this.matrixInterval = setInterval(createColumn, 200);
+            }
+
+            stopMatrixRain() {
+                if (this.matrixInterval) {
+                    clearInterval(this.matrixInterval);
+                    this.matrixInterval = null;
+                }
+                const matrixBg = document.getElementById('matrixBg');
+                if (matrixBg) {
+                    matrixBg.innerHTML = '';
+                }
+            }
+
+            bindEvents() {
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    this.handleLogout();
+                });
+
+                document.getElementById('addNoteBtn').addEventListener('click', () => {
+                    this.createNewNote();
+                });
+
+                document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                    this.toggleMobileSidebar();
+                });
+
+                // Theme switching - REPLACE THIS SECTION WITH DROPDOWN VERSION
+                // Theme switching
+				document.getElementById('themeSelect').addEventListener('change', (e) => {
+					this.setTheme(e.target.value);
+				});
+
+				document.getElementById('themeSelectHeader').addEventListener('change', (e) => {
+					this.setTheme(e.target.value);
+				});
+
+                // Auto-save functionality
+                let saveTimeout;
+                const autoSave = () => {
+                    clearTimeout(saveTimeout);
+                    saveTimeout = setTimeout(() => {
+                        if (this.currentNoteId) {
+                            this.saveCurrentNote();
+                        }
+                    }, 1000);
+                };
+
+                document.addEventListener('input', (e) => {
+                    if (e.target.classList.contains('note-title-input') || 
+                        e.target.classList.contains('note-content')) {
+                        autoSave();
+                    }
+                });
+            }
+
+            handleLogin() {
+                const inputPassword = document.getElementById('passwordInput').value;
+                const errorMessage = document.getElementById('errorMessage');
+
+                if (inputPassword === this.correctPassword) {
+                    this.password = inputPassword;
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('notesApp').style.display = 'block';
+                    this.renderNotesList();
+                    this.syncNotes(); // Sync on login
+                } else {
+                    const errorTexts = {
+                        light: 'Contrasenya incorrecta. Torna-ho a provar.',
+                        dark: 'Contrasenya incorrecta. Torna-ho a provar.',
+                        matrix: '>> ERROR_ACCÉS_DENEGAT. TORNA_A_INTENTAR'
+                    };
+                    errorMessage.textContent = errorTexts[this.currentTheme];
+                    document.getElementById('passwordInput').value = '';
+                }
+            }
+
+            handleLogout() {
+                this.password = '';
+                this.currentNoteId = null;
+                document.getElementById('loginScreen').style.display = 'block';
+                document.getElementById('notesApp').style.display = 'none';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('errorMessage').textContent = '';
+            }
+
+            loadNotes() {
+                try {
+                    const stored = localStorage.getItem('secureNotes');
+                    this.notes = stored ? JSON.parse(stored) : [];
+                } catch (e) {
+                    this.notes = [];
+                }
+            }
+
+            saveNotes() {
+                localStorage.setItem('secureNotes', JSON.stringify(this.notes));
+                // Sync to server if available
+                this.syncNotes();
+            }
+
+            async syncNotes() {
+                if (!this.syncEndpoint) {
+                    this.updateSyncStatus('local', 'Només local');
+                    return;
+                }
+
+                this.updateSyncStatus('syncing', 'Sincronitzant...');
+                
+                try {
+                    const response = await fetch(this.syncEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${this.generateSyncToken()}`
+                        },
+                        body: JSON.stringify({
+                            notes: this.notes,
+                            timestamp: new Date().toISOString()
+                        })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.notes && data.timestamp) {
+                            // Server has newer data
+                            const serverTime = new Date(data.timestamp);
+                            const localTime = new Date(localStorage.getItem('lastSync') || '1970-01-01');
+                            
+                            if (serverTime > localTime) {
+                                this.notes = data.notes;
+                                localStorage.setItem('secureNotes', JSON.stringify(this.notes));
+                                this.renderNotesList();
+                            }
+                        }
+                        localStorage.setItem('lastSync', new Date().toISOString());
+                        this.updateSyncStatus('synced', 'Sincronitzat');
+                    } else {
+                        throw new Error('Sync failed');
+                    }
+                } catch (error) {
+                    this.updateSyncStatus('error', 'Error de sincronització');
+                    console.error('Sync error:', error);
+                }
+            }
+
+            generateSyncToken() {
+                // Simple token generation - in production, use proper authentication
+                return btoa(`${this.password}:${Date.now()}`);
+            }
+
+            updateSyncStatus(status, text) {
+                const syncStatus = document.getElementById('syncStatus');
+                if (syncStatus) {
+                    syncStatus.className = `sync-status ${status}`;
+                    syncStatus.textContent = text;
+                }
+            }
+
+            createNewNote() {
+                const newNoteTitles = {
+                    light: 'Nova Nota',
+                    dark: 'Nova Nota',
+                    matrix: 'NOVA_TRANSMISSIÓ'
+                };
+
+                const newNote = {
+                    id: Date.now(),
+                    title: newNoteTitles[this.currentTheme],
+                    content: '',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+
+                this.notes.unshift(newNote);
+                this.saveNotes();
+                this.renderNotesList();
+                this.selectNote(newNote.id);
+            }
+
+            selectNote(noteId) {
+                this.currentNoteId = noteId;
+                const note = this.notes.find(n => n.id === noteId);
+                
+                if (note) {
+                    this.renderEditor(note);
+                    this.updateActiveNote();
+                }
+            }
+
+            renderEditor(note) {
+                const placeholders = {
+                    light: 'Títol de la nota...',
+                    dark: 'Títol de la nota...',
+                    matrix: '> TÍTOL_TRANSMISSIÓ...'
+                };
+
+                const contentPlaceholders = {
+                    light: 'Comença a escriure la teva nota aquí...',
+                    dark: 'Comença a escriure la teva nota aquí...',
+                    matrix: '> INTRODUEIX_DADES_TRANSMISSIÓ_AQUÍ...'
+                };
+
+                const editorArea = document.getElementById('editorArea');
+                editorArea.innerHTML = `
+                    <div class="editor-header">
+                        <input 
+                            type="text" 
+                            class="note-title-input" 
+                            value="${note.title}"
+                            placeholder="${placeholders[this.currentTheme]}"
+                        >
+                    </div>
+                    <textarea 
+                        class="note-content" 
+                        placeholder="${contentPlaceholders[this.currentTheme]}"
+                    >${note.content}</textarea>
+                `;
+            }
+
+            saveCurrentNote() {
+                if (!this.currentNoteId) return;
+
+                const titleInput = document.querySelector('.note-title-input');
+                const contentInput = document.querySelector('.note-content');
+                
+                if (titleInput && contentInput) {
+                    const note = this.notes.find(n => n.id === this.currentNoteId);
+                    if (note) {
+                        const untitledTexts = {
+                            light: 'Sense títol',
+                            dark: 'Sense títol',
+                            matrix: 'TRANSMISSIÓ_SENSE_TÍTOL'
+                        };
+                        
+                        note.title = titleInput.value || untitledTexts[this.currentTheme];
+                        note.content = contentInput.value;
+                        note.updatedAt = new Date().toISOString();
+                        this.saveNotes();
+                        this.renderNotesList();
+                        this.updateActiveNote();
+                    }
+                }
+            }
+
+            deleteNote(noteId) {
+                const confirmTexts = {
+                    light: 'Estàs segur que vols eliminar aquesta nota?',
+                    dark: 'Estàs segur que vols eliminar aquesta nota?',
+                    matrix: '>> CONFIRMAR: ELIMINAR_AQUESTA_TRANSMISSIÓ? [S/N]'
+                };
+
+                if (confirm(confirmTexts[this.currentTheme])) {
+                    this.notes = this.notes.filter(n => n.id !== noteId);
+                    this.saveNotes();
+                    
+                    if (this.currentNoteId === noteId) {
+                        this.currentNoteId = null;
+                        const emptyStates = {
+                            light: 'Selecciona una nota o crea\'n una de nova per començar a escriure',
+                            dark: 'Selecciona una nota o crea\'n una de nova per començar a escriure',
+                            matrix: '> SELECCIONA_NOTA O CREA_NOVA_TRANSMISSIÓ_'
+                        };
+                        
+                        document.getElementById('editorArea').innerHTML = `
+                            <div class="empty-state">
+                                ${emptyStates[this.currentTheme]}
+                            </div>
+                        `;
+                    }
+                    
+                    this.renderNotesList();
+                }
+            }
+
+            renderNotesList() {
+                const notesList = document.getElementById('notesList');
+                
+                if (this.notes.length === 0) {
+                    const emptyTexts = {
+                        light: 'Encara no hi ha notes',
+                        dark: 'Encara no hi ha notes',
+                        matrix: '>> CAP_TRANSMISSIÓ_TROBADA'
+                    };
+                    
+                    notesList.innerHTML = `<div style="text-align: center; color: ${this.currentTheme === 'matrix' ? '#004d00' : '#999'}; padding: 20px; font-family: ${this.currentTheme === 'matrix' ? '\'Source Code Pro\', monospace' : 'inherit'};">${emptyTexts[this.currentTheme]}</div>`;
+                    return;
+                }
+
+                const untitledTexts = {
+                    light: 'Sense títol',
+                    dark: 'Sense títol',
+                    matrix: 'TRANSMISSIÓ_SENSE_TÍTOL'
+                };
+
+                notesList.innerHTML = this.notes.map(note => `
+                    <div class="note-item" data-id="${note.id}">
+                        <div class="note-title">${note.title || untitledTexts[this.currentTheme]}</div>
+                        <div class="note-preview">${this.getPreview(note.content)}</div>
+                        <button class="delete-note" data-id="${note.id}">×</button>
+                    </div>
+                `).join('');
+
+                // Bind click events
+                notesList.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('delete-note')) {
+                        e.stopPropagation();
+                        this.deleteNote(parseInt(e.target.dataset.id));
+                    } else if (e.target.closest('.note-item')) {
+                        const noteId = parseInt(e.target.closest('.note-item').dataset.id);
+                        this.selectNote(noteId);
+                    }
+                });
+
+                this.updateActiveNote();
+            }
+
+            getPreview(content) {
+                return content.slice(0, 50) + (content.length > 50 ? '...' : '');
+            }
+
+            updateActiveNote() {
+                document.querySelectorAll('.note-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                if (this.currentNoteId) {
+                    const activeItem = document.querySelector(`[data-id="${this.currentNoteId}"]`);
+                    if (activeItem) {
+                        activeItem.classList.add('active');
+                    }
+                }
+            }
+
+            toggleMobileSidebar() {
+                document.getElementById('notesApp').classList.toggle('mobile-sidebar');
+            }
+        }
+
+        // Initialize the app
+        new SecureNotesApp();
+
+		// Replace the commented section at the end of your HTML file with:
+		window.addEventListener('DOMContentLoaded', () => {
+			// Get the app instance (you'll need to modify the constructor to store this)
+			const app = window.notesApp; // You'll need to set this in the constructor
+			
+			// Set your backend URL - change this to your deployed server
+			app.syncEndpoint = 'http://localhost:3000/sync-notes'; // Local development
+			// app.syncEndpoint = 'https://your-backend-server.herokuapp.com/sync-notes'; // Production
+		});
+        */
+    </script>
+</body>
+</html>
