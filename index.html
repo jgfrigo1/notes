@@ -688,26 +688,144 @@
 
         @media (max-width: 768px) {
             .container {
-                margin: 10px;
-                height: calc(100vh - 20px);
+                margin: 5px;
+                height: calc(100vh - 10px);
+                border-radius: 8px;
             }
 
+            .login-screen {
+                padding: 40px 20px;
+            }
+
+            .login-screen h1 {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+
+            .theme-dropdown {
+                position: static;
+                margin-bottom: 20px;
+                justify-content: center;
+                display: flex;
+            }
+
+            .theme-dropdown select {
+                font-size: 14px;
+                padding: 10px 15px;
+                min-width: 120px;
+            }
+
+            .login-form {
+                max-width: 100%;
+                padding: 0 10px;
+            }
+
+            .password-input {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 18px 15px;
+            }
+
+            .login-btn {
+                padding: 18px;
+                font-size: 16px;
+            }
+
+            /* Header mobile optimizations */
+            .header {
+                padding: 15px 10px;
+                flex-wrap: wrap;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+                margin-right: 10px;
+            }
+
+            .sync-status {
+                font-size: 10px;
+                padding: 2px 6px;
+                margin-left: 5px;
+            }
+
+            .header-controls {
+                gap: 8px;
+            }
+
+            .theme-dropdown-header {
+                margin-right: 8px;
+            }
+
+            .theme-dropdown-header select {
+                padding: 6px 8px;
+                font-size: 10px;
+                min-width: 60px;
+            }
+
+            .logout-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            /* Sidebar mobile behavior */
             .sidebar {
                 display: none;
+                width: 280px; /* Slightly wider on mobile */
             }
 
             .notes-app.mobile-sidebar .sidebar {
                 display: block;
-                position: absolute;
+                position: fixed; /* Changed from absolute to fixed */
                 left: 0;
-                top: 80px;
-                height: calc(100% - 80px);
-                z-index: 10;
-                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+                top: 0;
+                height: 100vh;
+                z-index: 100;
+                box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
+                padding-top: 60px; /* Space for close button */
             }
 
             body.matrix .notes-app.mobile-sidebar .sidebar {
                 box-shadow: 2px 0 20px rgba(0, 255, 65, 0.3);
+            }
+
+            /* Mobile sidebar close button */
+            .notes-app.mobile-sidebar .sidebar::before {
+                content: "✕";
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                font-size: 24px;
+                color: #666;
+                cursor: pointer;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background: rgba(0, 0, 0, 0.1);
+            }
+
+            body.dark .notes-app.mobile-sidebar .sidebar::before {
+                color: #ecf0f1;
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            body.matrix .notes-app.mobile-sidebar .sidebar::before {
+                color: #00ff41;
+                background: rgba(0, 255, 65, 0.1);
+                text-shadow: 0 0 5px #00ff41;
+            }
+
+            /* Mobile overlay */
+            .notes-app.mobile-sidebar::after {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 50;
             }
 
             .mobile-menu-btn {
@@ -719,6 +837,7 @@
                 border-radius: 6px;
                 cursor: pointer;
                 margin-right: 10px;
+                font-size: 14px;
             }
 
             body.matrix .mobile-menu-btn {
@@ -729,11 +848,142 @@
                 font-family: 'Source Code Pro', monospace;
             }
 
-            .theme-dropdown {
-                position: static;
-                margin-bottom: 20px;
-                justify-content: center;
-                display: flex;
+            /* Editor area mobile */
+            .editor-area {
+                height: 100%;
+            }
+
+            .editor-header {
+                padding: 12px 15px;
+            }
+
+            .note-title-input {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 8px 0;
+            }
+
+            .note-content {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 15px;
+                line-height: 1.5;
+            }
+
+            .empty-state {
+                font-size: 14px;
+                padding: 40px 20px;
+            }
+
+            /* Note list mobile optimizations */
+            .add-note-btn {
+                margin: 8px;
+                padding: 15px 12px;
+                font-size: 16px;
+            }
+
+            .notes-list {
+                padding: 0 8px;
+            }
+
+            .note-item {
+                padding: 15px 12px;
+                margin: 8px 0;
+                border-radius: 8px;
+            }
+
+            .note-title {
+                font-size: 15px;
+                margin-bottom: 6px;
+            }
+
+            .note-preview {
+                font-size: 13px;
+                line-height: 1.3;
+            }
+
+            .delete-note {
+                width: 24px;
+                height: 24px;
+                font-size: 14px;
+                top: 12px;
+                right: 12px;
+            }
+
+            /* Matrix theme mobile adjustments */
+            body.matrix .container {
+                border-radius: 4px;
+            }
+
+            /* Prevent horizontal scroll */
+            body {
+                overflow-x: hidden;
+            }
+
+            .container {
+                max-width: 100vw;
+                overflow-x: hidden;
+            }
+
+            /* Touch-friendly interactions */
+            .note-item, .add-note-btn, .login-btn, .logout-btn, .theme-dropdown select {
+                touch-action: manipulation; /* Prevents double-tap zoom */
+            }
+
+            /* Larger touch targets */
+            .mobile-menu-btn {
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            .delete-note {
+                min-width: 44px;
+                min-height: 44px;
+            }
+        }
+
+        /* Smaller mobile screens */
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 100vw; /* Full width on very small screens */
+            }
+
+            .notes-app.mobile-sidebar .sidebar {
+                width: 100vw;
+            }
+
+            .header h1 {
+                font-size: 1rem;
+            }
+
+            .sync-status {
+                display: none; /* Hide on very small screens */
+            }
+
+            .login-screen h1 {
+                font-size: 1.3rem;
+            }
+
+            .theme-dropdown-header {
+                display: none; /* Hide theme selector on very small screens */
+            }
+        }
+
+        /* Landscape mobile optimization */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .container {
+                height: calc(100vh - 10px);
+            }
+
+            .login-screen {
+                padding: 20px;
+            }
+
+            .login-screen h1 {
+                font-size: 1.3rem;
+                margin-bottom: 15px;
+            }
+
+            .header {
+                padding: 10px;
             }
         }
 
@@ -904,9 +1154,9 @@
 
             updateThemeText() {
                 const titles = {
-                    light: '🔒 Les Meves Notes Segures',
-                    dark: '🌙 Les Meves Notes Segures',
-                    matrix: '⚡ NOTES SEGURES MATRIX'
+                    light: '🔒 Les Meves Notes',
+                    dark: '🌙 Les Meves Notes',
+                    matrix: '⚡ MATRIX NOTES'
                 };
 
                 const appTitles = {
@@ -996,8 +1246,8 @@
                 }
             }
 
-            // Generate a unique bin ID based on password
-            getBinId() {
+            // Generate gist ID based on password
+            getGistId() {
                 const passwordHash = btoa(this.password).replace(/[^a-zA-Z0-9]/g, '').substring(0, 16);
                 return `notes_${passwordHash}`;
             }
@@ -1107,107 +1357,134 @@
                 }, 2000); // Wait 2 seconds after last save before syncing
             }
 
-            // Sync notes with JSONBin.io
+            // Sync notes with GitHub Gist
             async syncNotes() {
-                if (!this.jsonbinApiKey || this.jsonbinApiKey.includes('YOUR_API_KEY')) {
+                if (!this.githubToken || this.githubToken.includes('YOUR_GITHUB_TOKEN')) {
                     this.updateSyncStatus('local', 'Només local');
                     return;
                 }
 
                 this.updateSyncStatus('syncing', 'Sincronitzant...');
+                console.log('🔄 Syncing with GitHub Gist...');
                 
                 try {
-                    const binId = this.getBinId();
-                    const storedBinId = localStorage.getItem(`jsonbin_${binId}`);
+                    const gistName = this.getGistId();
+                    const storedGistId = localStorage.getItem(`gist_${gistName}`);
                     
-                    if (storedBinId) {
-                        // Try to update existing bin
-                        await this.updateExistingBin(storedBinId);
+                    if (storedGistId) {
+                        await this.updateExistingGist(storedGistId);
                     } else {
-                        // Create new bin or find existing one
-                        await this.createOrFindBin(binId);
+                        await this.createNewGist(gistName);
                     }
                     
                 } catch (error) {
-                    console.error('Sync error:', error);
+                    console.error('💥 Sync error:', error);
                     this.updateSyncStatus('error', 'Error de sincronització');
                 }
             }
 
-            // Update existing bin
-            async updateExistingBin(realBinId) {
+            // Update existing gist
+            async updateExistingGist(gistId) {
                 try {
-                    // First, get the current server data
-                    const getResponse = await fetch(`${this.jsonbinBaseUrl}/${realBinId}/latest`, {
-                        method: 'GET',
+                    console.log('📥 Fetching gist:', gistId);
+                    
+                    // Get current gist
+                    const getResponse = await fetch(`${this.githubApiUrl}/${gistId}`, {
                         headers: {
-                            'X-Master-Key': this.jsonbinApiKey
+                            'Authorization': `token ${this.githubToken}`,
+                            'Accept': 'application/vnd.github.v3+json'
                         }
                     });
 
                     if (getResponse.ok) {
-                        const serverData = await getResponse.json();
-                        const serverNotes = serverData.record || [];
+                        const gistData = await getResponse.json();
+                        const serverNotes = JSON.parse(gistData.files['notes.json'].content || '[]');
+                        console.log('📥 Server notes:', serverNotes.length);
+                        console.log('📤 Local notes:', this.notes.length);
                         
-                        // Simple conflict resolution: merge based on timestamps
+                        // Merge notes
                         const mergedNotes = this.mergeNotes(this.notes, serverNotes);
+                        console.log('🔀 Merged notes:', mergedNotes.length);
                         
-                        // Update the bin with merged data
-                        const updateResponse = await fetch(`${this.jsonbinBaseUrl}/${realBinId}`, {
-                            method: 'PUT',
+                        // Update gist
+                        const updateResponse = await fetch(`${this.githubApiUrl}/${gistId}`, {
+                            method: 'PATCH',
                             headers: {
-                                'Content-Type': 'application/json',
-                                'X-Master-Key': this.jsonbinApiKey
+                                'Authorization': `token ${this.githubToken}`,
+                                'Accept': 'application/vnd.github.v3+json',
+                                'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify(mergedNotes)
+                            body: JSON.stringify({
+                                files: {
+                                    'notes.json': {
+                                        content: JSON.stringify(mergedNotes, null, 2)
+                                    }
+                                }
+                            })
                         });
 
                         if (updateResponse.ok) {
+                            console.log('✅ Gist updated successfully');
                             this.notes = mergedNotes;
                             this.saveNotesLocally();
                             this.renderNotesList();
                             this.updateSyncStatus('synced', 'Sincronitzat');
                         } else {
-                            throw new Error('Failed to update bin');
+                            const errorData = await updateResponse.json();
+                            console.error('❌ Update failed:', errorData);
+                            throw new Error('Failed to update gist: ' + errorData.message);
                         }
                     } else if (getResponse.status === 404) {
-                        // Bin doesn't exist, create new one
-                        await this.createOrFindBin(this.getBinId());
+                        console.log('🔍 Gist not found, creating new one...');
+                        await this.createNewGist(this.getGistId());
                     } else {
-                        throw new Error('Failed to fetch server data');
+                        const errorData = await getResponse.json();
+                        console.error('❌ Fetch failed:', errorData);
+                        throw new Error('Failed to fetch gist: ' + errorData.message);
                     }
                 } catch (error) {
-                    console.error('Update bin error:', error);
+                    console.error('💥 Update gist error:', error);
                     throw error;
                 }
             }
 
-            // Create new bin or find existing one
-            async createOrFindBin(binName) {
+            // Create new gist
+            async createNewGist(gistName) {
                 try {
-                    const response = await fetch(this.jsonbinBaseUrl, {
+                    console.log('🆕 Creating new gist:', gistName);
+                    
+                    const response = await fetch(this.githubApiUrl, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json',
-                            'X-Master-Key': this.jsonbinApiKey,
-                            'X-Bin-Name': binName
+                            'Authorization': `token ${this.githubToken}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(this.notes)
+                        body: JSON.stringify({
+                            description: `Secure Notes - ${gistName}`,
+                            public: false,
+                            files: {
+                                'notes.json': {
+                                    content: JSON.stringify(this.notes, null, 2)
+                                }
+                            }
+                        })
                     });
 
                     if (response.ok) {
                         const data = await response.json();
-                        const realBinId = data.metadata.id;
+                        console.log('✅ Gist created:', data.id);
                         
-                        // Store the real bin ID
-                        localStorage.setItem(`jsonbin_${binName}`, realBinId);
-                        
+                        // Store the gist ID
+                        localStorage.setItem(`gist_${gistName}`, data.id);
                         this.updateSyncStatus('synced', 'Sincronitzat');
                     } else {
-                        throw new Error('Failed to create bin');
+                        const errorData = await response.json();
+                        console.error('❌ Create gist failed:', errorData);
+                        throw new Error('Failed to create gist: ' + errorData.message);
                     }
                 } catch (error) {
-                    console.error('Create bin error:', error);
+                    console.error('💥 Create gist error:', error);
                     throw error;
                 }
             }
@@ -1426,12 +1703,47 @@
             }
 
             toggleMobileSidebar() {
-                document.getElementById('notesApp').classList.toggle('mobile-sidebar');
+                const notesApp = document.getElementById('notesApp');
+                notesApp.classList.toggle('mobile-sidebar');
+                
+                // Close sidebar when clicking outside (on mobile overlay)
+                if (notesApp.classList.contains('mobile-sidebar')) {
+                    const closeHandler = (e) => {
+                        // Close if clicking on overlay or close button
+                        if (e.target === notesApp || e.target.classList.contains('notes-app') || 
+                            e.target === document.querySelector('.notes-app.mobile-sidebar::after')) {
+                            notesApp.classList.remove('mobile-sidebar');
+                            document.removeEventListener('click', closeHandler);
+                        }
+                    };
+                    
+                    // Add click handler for overlay
+                    setTimeout(() => {
+                        document.addEventListener('click', closeHandler);
+                    }, 100);
+                }
             }
         }
 
         // Initialize the app
         new SecureNotesApp();
+
+        // Mobile sidebar close functionality
+        document.addEventListener('click', (e) => {
+            const sidebar = document.querySelector('.notes-app.mobile-sidebar .sidebar');
+            const notesApp = document.getElementById('notesApp');
+            
+            if (sidebar && notesApp.classList.contains('mobile-sidebar')) {
+                const rect = sidebar.getBoundingClientRect();
+                const clickedOutside = e.clientX < rect.left || e.clientX > rect.right || 
+                                     e.clientY < rect.top || e.clientY > rect.bottom;
+                
+                // Close if clicked outside sidebar or on close button area
+                if (clickedOutside || (e.clientX > rect.right - 50 && e.clientY < rect.top + 50)) {
+                    notesApp.classList.remove('mobile-sidebar');
+                }
+            }
+        });
     </script>
 </body>
 </html>
