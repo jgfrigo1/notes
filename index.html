@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Secure Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px;
+        }
+
+        .login-screen {
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .login-screen h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .login-form {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .notes-app {
+            display: none;
+            height: 90vh;
+            max-height: 700px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .main-content {
+            display: flex;
+            height: calc(100% - 80px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #f8f9fa;
+            border-right: 1px solid #e1e5e9;
+            overflow-y: auto;
+        }
+
+        .add-note-btn {
+            width: calc(100% - 20px);
+            margin: 10px;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .add-note-btn:hover {
+            background: #5a67d8;
+        }
+
+        .notes-list {
+            padding: 0 10px;
+        }
+
+        .note-item {
+            padding: 12px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .note-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .note-item.active {
+            border-left-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .note-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .note-preview {
+            color: #666;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .delete-note {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .note-item:hover .delete-note {
+            opacity: 1;
+        }
+
+        .editor-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .editor-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .note-title-input {
+            width: 100%;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            outline: none;
+            padding: 5px 0;
+            color: #333;
+        }
+
+        .note-content {
+            flex: 1;
+            padding: 20px;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: none;
+        }
+
+        .empty-state {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                height: calc(100vh - 20px);
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .notes-app.mobile-sidebar .sidebar {
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 80px;
+                height: calc(100% - 80px);
+                z-index: 10;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                background: rgba(255, 255, 255, 0.2);
+                color: white;
+                border: none;
+                padding: 8px 12px;
+                border-radius: 6px;
+                cursor: pointer;
+                margin-right: 10px;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <h1>🔒 Bloc de Notes</h1>
+            <form class="login-form" id="loginForm">
+                <input 
+                    type="password" 
+                    class="password-input" 
+                    id="passwordInput" 
+                    placeholder="Enter your password"
+                    required
+                >
+                <button type="submit" class="login-btn">Desbloquejar</button>
+                <div class="error-message" id="errorMessage"></div>
+            </form>
+        </div>
+
+        <!-- Notes App -->
+        <div class="notes-app" id="notesApp">
+            <div class="header">
+                <div style="display: flex; align-items: center;">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                    <h1>Les meves Notes</h1>
+                </div>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+            
+            <div class="main-content">
+                <div class="sidebar" id="sidebar">
+                    <button class="add-note-btn" id="addNoteBtn">+ Nota Nova</button>
+                    <div class="notes-list" id="notesList"></div>
+                </div>
+                
+                <div class="editor-area" id="editorArea">
+                    <div class="empty-state" id="emptyState">
+                        Select a note or create a new one to start writing
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class SecureNotesApp {
+            constructor() {
+                this.password = '';
+                this.notes = [];
+                this.currentNoteId = null;
+                this.initializeApp();
+            }
+
+            initializeApp() {
+                // Set your password here - change this to your desired password
+                this.correctPassword = 'notes';
+                
+                this.bindEvents();
+                this.loadNotes();
+            }
+
+            bindEvents() {
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    this.handleLogout();
+                });
+
+                document.getElementById('addNoteBtn').addEventListener('click', () => {
+                    this.createNewNote();
+                });
+
+                document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                    this.toggleMobileSidebar();
+                });
+
+                // Auto-save functionality
+                let saveTimeout;
+                const autoSave = () => {
+                    clearTimeout(saveTimeout);
+                    saveTimeout = setTimeout(() => {
+                        if (this.currentNoteId) {
+                            this.saveCurrentNote();
+                        }
+                    }, 1000);
+                };
+
+                document.addEventListener('input', (e) => {
+                    if (e.target.classList.contains('note-title-input') || 
+                        e.target.classList.contains('note-content')) {
+                        autoSave();
+                    }
+                });
+            }
+
+            handleLogin() {
+                const inputPassword = document.getElementById('passwordInput').value;
+                const errorMessage = document.getElementById('errorMessage');
+
+                if (inputPassword === this.correctPassword) {
+                    this.password = inputPassword;
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('notesApp').style.display = 'block';
+                    this.renderNotesList();
+                } else {
+                    errorMessage.textContent = 'Incorrect password. Please try again.';
+                    document.getElementById('passwordInput').value = '';
+                }
+            }
+
+            handleLogout() {
+                this.password = '';
+                this.currentNoteId = null;
+                document.getElementById('loginScreen').style.display = 'block';
+                document.getElementById('notesApp').style.display = 'none';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('errorMessage').textContent = '';
+            }
+
+            loadNotes() {
+                try {
+                    const stored = localStorage.getItem('secureNotes');
+                    this.notes = stored ? JSON.parse(stored) : [];
+                } catch (e) {
+                    this.notes = [];
+                }
+            }
+
+            saveNotes() {
+                localStorage.setItem('secureNotes', JSON.stringify(this.notes));
+            }
+
+            createNewNote() {
+                const newNote = {
+                    id: Date.now(),
+                    title: 'New Note',
+                    content: '',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+
+                this.notes.unshift(newNote);
+                this.saveNotes();
+                this.renderNotesList();
+                this.selectNote(newNote.id);
+            }
+
+            selectNote(noteId) {
+                this.currentNoteId = noteId;
+                const note = this.notes.find(n => n.id === noteId);
+                
+                if (note) {
+                    this.renderEditor(note);
+                    this.updateActiveNote();
+                }
+            }
+
+            renderEditor(note) {
+                const editorArea = document.getElementById('editorArea');
+                editorArea.innerHTML = `
+                    <div class="editor-header">
+                        <input 
+                            type="text" 
+                            class="note-title-input" 
+                            value="${note.title}"
+                            placeholder="Note title..."
+                        >
+                    </div>
+                    <textarea 
+                        class="note-content" 
+                        placeholder="Start typing your note here..."
+                    >${note.content}</textarea>
+                `;
+            }
+
+            saveCurrentNote() {
+                if (!this.currentNoteId) return;
+
+                const titleInput = document.querySelector('.note-title-input');
+                const contentInput = document.querySelector('.note-content');
+                
+                if (titleInput && contentInput) {
+                    const note = this.notes.find(n => n.id === this.currentNoteId);
+                    if (note) {
+                        note.title = titleInput.value || 'Untitled';
+                        note.content = contentInput.value;
+                        note.updatedAt = new Date().toISOString();
+                        this.saveNotes();
+                        this.renderNotesList();
+                        this.updateActiveNote();
+                    }
+                }
+            }
+
+            deleteNote(noteId) {
+                if (confirm('Are you sure you want to delete this note?')) {
+                    this.notes = this.notes.filter(n => n.id !== noteId);
+                    this.saveNotes();
+                    
+                    if (this.currentNoteId === noteId) {
+                        this.currentNoteId = null;
+                        document.getElementById('editorArea').innerHTML = `
+                            <div class="empty-state">
+                                Select a note or create a new one to start writing
+                            </div>
+                        `;
+                    }
+                    
+                    this.renderNotesList();
+                }
+            }
+
+            renderNotesList() {
+                const notesList = document.getElementById('notesList');
+                
+                if (this.notes.length === 0) {
+                    notesList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">No notes yet</div>';
+                    return;
+                }
+
+                notesList.innerHTML = this.notes.map(note => `
+                    <div class="note-item" data-id="${note.id}">
+                        <div class="note-title">${note.title || 'Untitled'}</div>
+                        <div class="note-preview">${this.getPreview(note.content)}</div>
+                        <button class="delete-note" data-id="${note.id}">×</button>
+                    </div>
+                `).join('');
+
+                // Bind click events
+                notesList.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('delete-note')) {
+                        e.stopPropagation();
+                        this.deleteNote(parseInt(e.target.dataset.id));
+                    } else if (e.target.closest('.note-item')) {
+                        const noteId = parseInt(e.target.closest('.note-item').dataset.id);
+                        this.selectNote(noteId);
+                    }
+                });
+
+                this.updateActiveNote();
+            }
+
+            getPreview(content) {
+                return content.slice(0, 50) + (content.length > 50 ? '...' : '');
+            }
+
+            updateActiveNote() {
+                document.querySelectorAll('.note-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                if (this.currentNoteId) {
+                    const activeItem = document.querySelector(`[data-id="${this.currentNoteId}"]`);
+                    if (activeItem) {
+                        activeItem.classList.add('active');
+                    }
+                }
+            }
+
+            toggleMobileSidebar() {
+                document.getElementById('notesApp').classList.toggle('mobile-sidebar');
+            }
+        }
+
+        // Initialize the app
+        new SecureNotesApp();
+    </script>
+</body>
+</html>
