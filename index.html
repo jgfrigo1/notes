@@ -13,44 +13,29 @@
             box-sizing: border-box;
         }
 
-				.theme-dropdown {
-			position: absolute;
-			top: 20px;
-			right: 20px;
-		}
+        /* Light Theme (Default) */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
 
-		.theme-dropdown select {
-			padding: 8px 12px;
-			border: 1px solid #ccc;
-			background: white;
-			border-radius: 6px;
-			cursor: pointer;
-			font-size: 12px;
-			min-width: 100px;
-		}
+        /* Dark Theme */
+        body.dark {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
 
-		body.dark .theme-dropdown select {
-			background: #34495e;
-			border-color: #7f8c8d;
-			color: #ecf0f1;
-		}
-
-		body.matrix .theme-dropdown select {
-			background: rgba(0, 0, 0, 0.8);
-			border-color: #00ff41;
-			color: #00ff41;
-			font-family: 'Source Code Pro', monospace;
-		}
-
-		.theme-dropdown-header {
-			margin-right: 15px;
-		}
-
-		.theme-dropdown-header select {
-			padding: 6px 10px;
-			font-size: 11px;
-			min-width: 80px;
-		}
+        /* Matrix Theme */
+        body.matrix {
+            font-family: 'Source Code Pro', 'Courier New', monospace;
+            background: #000;
+            overflow: hidden;
+            position: relative;
+        }
 
         /* Matrix Rain Effect */
         .matrix-bg {
@@ -138,51 +123,34 @@
             letter-spacing: 2px;
         }
 
-        .theme-selector {
+        .theme-dropdown {
             position: absolute;
             top: 20px;
             right: 20px;
-            display: flex;
-            gap: 10px;
         }
 
-        .theme-btn {
+        .theme-dropdown select {
             padding: 8px 12px;
             border: 1px solid #ccc;
             background: white;
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
+            min-width: 100px;
             transition: all 0.3s ease;
         }
 
-        body.dark .theme-btn {
+        body.dark .theme-dropdown select {
             background: #34495e;
             border-color: #7f8c8d;
             color: #ecf0f1;
         }
 
-        body.matrix .theme-btn {
+        body.matrix .theme-dropdown select {
             background: rgba(0, 0, 0, 0.8);
             border-color: #00ff41;
             color: #00ff41;
             font-family: 'Source Code Pro', monospace;
-        }
-
-        .theme-btn.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        body.dark .theme-btn.active {
-            background: #3498db;
-            border-color: #3498db;
-        }
-
-        body.matrix .theme-btn.active {
-            background: rgba(0, 255, 65, 0.2);
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.4);
         }
 
         .login-form {
@@ -338,40 +306,26 @@
             gap: 15px;
         }
 
-        .theme-selector-header {
-            display: flex;
-            gap: 5px;
+        .theme-dropdown-header {
+            margin-right: 15px;
         }
 
-        .theme-btn-small {
-            width: 30px;
-            height: 30px;
+        .theme-dropdown-header select {
+            padding: 6px 10px;
+            font-size: 11px;
+            min-width: 80px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             background: rgba(255, 255, 255, 0.1);
+            color: white;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 10px;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
         }
 
-        .theme-btn-small.active {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: white;
-        }
-
-        body.matrix .theme-btn-small {
+        body.matrix .theme-dropdown-header select {
             border-color: #00ff41;
             color: #00ff41;
             background: rgba(0, 0, 0, 0.8);
-        }
-
-        body.matrix .theme-btn-small.active {
-            background: rgba(0, 255, 65, 0.2);
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.4);
+            font-family: 'Source Code Pro', monospace;
         }
 
         .logout-btn {
@@ -775,10 +729,11 @@
                 font-family: 'Source Code Pro', monospace;
             }
 
-            .theme-selector {
+            .theme-dropdown {
                 position: static;
                 margin-bottom: 20px;
                 justify-content: center;
+                display: flex;
             }
         }
 
@@ -838,13 +793,13 @@
     <div class="container">
         <!-- Login Screen -->
         <div class="login-screen" id="loginScreen">
-			<div class="theme-dropdown">
-				<select id="themeSelect">
-					<option value="light">🌅 Clar</option>
-					<option value="dark">🌙 Fosc</option>
-					<option value="matrix">⚡ Matrix</option>
-				</select>
-			</div>
+            <div class="theme-dropdown">
+                <select id="themeSelect">
+                    <option value="light">🌅 Clar</option>
+                    <option value="dark">🌙 Fosc</option>
+                    <option value="matrix">⚡ Matrix</option>
+                </select>
+            </div>
             <h1 id="loginTitle">🔒 Les Meves Notes Segures</h1>
             <form class="login-form" id="loginForm">
                 <input 
@@ -868,15 +823,15 @@
                     <div class="sync-status" id="syncStatus">Sincronitzat</div>
                 </div>
                 <div class="header-controls">
-					<div class="theme-dropdown-header">
-						<select id="themeSelectHeader">
-							<option value="light">🌅 Clar</option>
-							<option value="dark">🌙 Fosc</option>
-							<option value="matrix">⚡ Matrix</option>
-						</select>
-					</div>
-					<button class="logout-btn" id="logoutBtn">Sortir</button>
-				</div>
+                    <div class="theme-dropdown-header">
+                        <select id="themeSelectHeader">
+                            <option value="light">🌅 Clar</option>
+                            <option value="dark">🌙 Fosc</option>
+                            <option value="matrix">⚡ Matrix</option>
+                        </select>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn">Sortir</button>
+                </div>
             </div>
             
             <div class="main-content">
@@ -901,14 +856,17 @@
                 this.notes = [];
                 this.currentNoteId = null;
                 this.currentTheme = 'light';
-                this.syncEndpoint = http://localhost:3000/sync-notes; // Would be set to your backend URL
+                this.syncTimeout = null;
                 this.initializeApp();
-				window.notesApp = this;
             }
 
             initializeApp() {
                 // Set your password here - change this to your desired password
-                this.correctPassword = 'notes';
+                this.correctPassword = 'laMetaContrasenye123';
+                
+                // JSONBin.io configuration - REPLACE WITH YOUR API KEY
+                this.jsonbinApiKey = '$2a$10$OH3gnlOH17ST.7OE9cnAMuRbzSSCoydxFhcBQXswqr7PgpuBgtKMO'; // Get from jsonbin.io
+                this.jsonbinBaseUrl = 'https://api.jsonbin.io/v3/b';
                 
                 this.loadTheme();
                 this.bindEvents();
@@ -927,11 +885,11 @@
                 localStorage.setItem('notesAppTheme', theme);
                 
                 // Update dropdown selections
-				document.getElementById('themeSelect').value = theme;
-				const headerSelect = document.getElementById('themeSelectHeader');
-				if (headerSelect) {
-					headerSelect.value = theme;
-				}
+                document.getElementById('themeSelect').value = theme;
+                const headerSelect = document.getElementById('themeSelectHeader');
+                if (headerSelect) {
+                    headerSelect.value = theme;
+                }
 
                 // Update text content based on theme
                 this.updateThemeText();
@@ -946,9 +904,9 @@
 
             updateThemeText() {
                 const titles = {
-                    light: '🔒 Les Meves Notes Segures',
-                    dark: '🌙 Les Meves Notes Segures',
-                    matrix: '⚡ NOTES SEGURES MATRIX'
+                    light: '🔒 Les Meves Notes',
+                    dark: '🌙 Les Meves Notes',
+                    matrix: '⚡ MATRIX NOTES'
                 };
 
                 const appTitles = {
@@ -975,7 +933,7 @@
                     matrix: '> SELECCIONA_NOTA O CREA_NOVA_TRANSMISSIÓ_'
                 };
 
-				document.getElementById('loginTitle').textContent = titles[this.currentTheme];
+                document.getElementById('loginTitle').textContent = titles[this.currentTheme];
                 document.getElementById('appTitle').textContent = appTitles[this.currentTheme];
                 document.getElementById('passwordInput').placeholder = placeholders[this.currentTheme];
                 document.getElementById('loginBtn').textContent = buttonTexts[this.currentTheme];
@@ -1038,6 +996,12 @@
                 }
             }
 
+            // Generate a unique bin ID based on password
+            getBinId() {
+                const passwordHash = btoa(this.password).replace(/[^a-zA-Z0-9]/g, '').substring(0, 16);
+                return `notes_${passwordHash}`;
+            }
+
             bindEvents() {
                 document.getElementById('loginForm').addEventListener('submit', (e) => {
                     e.preventDefault();
@@ -1056,15 +1020,14 @@
                     this.toggleMobileSidebar();
                 });
 
-                // Theme switching - REPLACE THIS SECTION WITH DROPDOWN VERSION
-                // Theme switching
-				document.getElementById('themeSelect').addEventListener('change', (e) => {
-					this.setTheme(e.target.value);
-				});
+                // Theme switching with dropdowns
+                document.getElementById('themeSelect').addEventListener('change', (e) => {
+                    this.setTheme(e.target.value);
+                });
 
-				document.getElementById('themeSelectHeader').addEventListener('change', (e) => {
-					this.setTheme(e.target.value);
-				});
+                document.getElementById('themeSelectHeader').addEventListener('change', (e) => {
+                    this.setTheme(e.target.value);
+                });
 
                 // Auto-save functionality
                 let saveTimeout;
@@ -1094,7 +1057,12 @@
                     document.getElementById('loginScreen').style.display = 'none';
                     document.getElementById('notesApp').style.display = 'block';
                     this.renderNotesList();
-                    this.syncNotes(); // Sync on login
+                    
+                    // Sync after login to get latest notes
+                    setTimeout(() => {
+                        this.syncNotes();
+                    }, 500);
+                    
                 } else {
                     const errorTexts = {
                         light: 'Contrasenya incorrecta. Torna-ho a provar.',
@@ -1124,14 +1092,24 @@
                 }
             }
 
-            saveNotes() {
+            // Save notes locally only (without sync)
+            saveNotesLocally() {
                 localStorage.setItem('secureNotes', JSON.stringify(this.notes));
-                // Sync to server if available
-                this.syncNotes();
             }
 
+            // Modified saveNotes to include sync
+            saveNotes() {
+                this.saveNotesLocally();
+                // Debounce sync to avoid too many API calls
+                clearTimeout(this.syncTimeout);
+                this.syncTimeout = setTimeout(() => {
+                    this.syncNotes();
+                }, 2000); // Wait 2 seconds after last save before syncing
+            }
+
+            // Sync notes with JSONBin.io
             async syncNotes() {
-                if (!this.syncEndpoint) {
+                if (!this.jsonbinApiKey || this.jsonbinApiKey.includes('YOUR_API_KEY')) {
                     this.updateSyncStatus('local', 'Només local');
                     return;
                 }
@@ -1139,45 +1117,122 @@
                 this.updateSyncStatus('syncing', 'Sincronitzant...');
                 
                 try {
-                    const response = await fetch(this.syncEndpoint, {
+                    const binId = this.getBinId();
+                    const storedBinId = localStorage.getItem(`jsonbin_${binId}`);
+                    
+                    if (storedBinId) {
+                        // Try to update existing bin
+                        await this.updateExistingBin(storedBinId);
+                    } else {
+                        // Create new bin or find existing one
+                        await this.createOrFindBin(binId);
+                    }
+                    
+                } catch (error) {
+                    console.error('Sync error:', error);
+                    this.updateSyncStatus('error', 'Error de sincronització');
+                }
+            }
+
+            // Update existing bin
+            async updateExistingBin(realBinId) {
+                try {
+                    // First, get the current server data
+                    const getResponse = await fetch(`${this.jsonbinBaseUrl}/${realBinId}/latest`, {
+                        method: 'GET',
+                        headers: {
+                            'X-Master-Key': this.jsonbinApiKey
+                        }
+                    });
+
+                    if (getResponse.ok) {
+                        const serverData = await getResponse.json();
+                        const serverNotes = serverData.record || [];
+                        
+                        // Simple conflict resolution: merge based on timestamps
+                        const mergedNotes = this.mergeNotes(this.notes, serverNotes);
+                        
+                        // Update the bin with merged data
+                        const updateResponse = await fetch(`${this.jsonbinBaseUrl}/${realBinId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Master-Key': this.jsonbinApiKey
+                            },
+                            body: JSON.stringify(mergedNotes)
+                        });
+
+                        if (updateResponse.ok) {
+                            this.notes = mergedNotes;
+                            this.saveNotesLocally();
+                            this.renderNotesList();
+                            this.updateSyncStatus('synced', 'Sincronitzat');
+                        } else {
+                            throw new Error('Failed to update bin');
+                        }
+                    } else if (getResponse.status === 404) {
+                        // Bin doesn't exist, create new one
+                        await this.createOrFindBin(this.getBinId());
+                    } else {
+                        throw new Error('Failed to fetch server data');
+                    }
+                } catch (error) {
+                    console.error('Update bin error:', error);
+                    throw error;
+                }
+            }
+
+            // Create new bin or find existing one
+            async createOrFindBin(binName) {
+                try {
+                    const response = await fetch(this.jsonbinBaseUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${this.generateSyncToken()}`
+                            'X-Master-Key': this.jsonbinApiKey,
+                            'X-Bin-Name': binName
                         },
-                        body: JSON.stringify({
-                            notes: this.notes,
-                            timestamp: new Date().toISOString()
-                        })
+                        body: JSON.stringify(this.notes)
                     });
 
                     if (response.ok) {
                         const data = await response.json();
-                        if (data.notes && data.timestamp) {
-                            // Server has newer data
-                            const serverTime = new Date(data.timestamp);
-                            const localTime = new Date(localStorage.getItem('lastSync') || '1970-01-01');
-                            
-                            if (serverTime > localTime) {
-                                this.notes = data.notes;
-                                localStorage.setItem('secureNotes', JSON.stringify(this.notes));
-                                this.renderNotesList();
-                            }
-                        }
-                        localStorage.setItem('lastSync', new Date().toISOString());
+                        const realBinId = data.metadata.id;
+                        
+                        // Store the real bin ID
+                        localStorage.setItem(`jsonbin_${binName}`, realBinId);
+                        
                         this.updateSyncStatus('synced', 'Sincronitzat');
                     } else {
-                        throw new Error('Sync failed');
+                        throw new Error('Failed to create bin');
                     }
                 } catch (error) {
-                    this.updateSyncStatus('error', 'Error de sincronització');
-                    console.error('Sync error:', error);
+                    console.error('Create bin error:', error);
+                    throw error;
                 }
             }
 
-            generateSyncToken() {
-                // Simple token generation - in production, use proper authentication
-                return btoa(`${this.password}:${Date.now()}`);
+            // Merge notes from local and server (simple conflict resolution)
+            mergeNotes(localNotes, serverNotes) {
+                const mergedMap = new Map();
+                
+                // Add all local notes
+                localNotes.forEach(note => {
+                    mergedMap.set(note.id, note);
+                });
+                
+                // Add server notes, keeping the most recently updated version
+                serverNotes.forEach(serverNote => {
+                    const existingNote = mergedMap.get(serverNote.id);
+                    if (!existingNote || new Date(serverNote.updatedAt) > new Date(existingNote.updatedAt)) {
+                        mergedMap.set(serverNote.id, serverNote);
+                    }
+                });
+                
+                // Convert back to array and sort by creation date (newest first)
+                return Array.from(mergedMap.values()).sort((a, b) => 
+                    new Date(b.createdAt) - new Date(a.createdAt)
+                );
             }
 
             updateSyncStatus(status, text) {
@@ -1185,6 +1240,13 @@
                 if (syncStatus) {
                     syncStatus.className = `sync-status ${status}`;
                     syncStatus.textContent = text;
+                    
+                    // Auto-hide sync status after success
+                    if (status === 'synced') {
+                        setTimeout(() => {
+                            syncStatus.textContent = 'Sincronitzat';
+                        }, 3000);
+                    }
                 }
             }
 
@@ -1370,17 +1432,6 @@
 
         // Initialize the app
         new SecureNotesApp();
-
-		// Replace the commented section at the end of your HTML file with:
-		window.addEventListener('DOMContentLoaded', () => {
-			// Get the app instance (you'll need to modify the constructor to store this)
-			const app = window.notesApp; // You'll need to set this in the constructor
-			
-			// Set your backend URL - change this to your deployed server
-			app.syncEndpoint = 'http://localhost:3000/sync-notes'; // Local development
-			// app.syncEndpoint = 'https://your-backend-server.herokuapp.com/sync-notes'; // Production
-		});
-        */
     </script>
 </body>
 </html>
